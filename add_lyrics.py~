@@ -1,0 +1,56 @@
+from mutagen.id3 import ID3, USLT
+import os
+
+def add_lyrics_to_mp3(file_path: str, lyrics: str):
+    try:
+        # ID3 태그 로드 또는 생성
+        audio = ID3(file_path)
+    except:
+        # 파일에 ID3 태그가 없는 경우 새로 생성
+        audio = ID3()
+
+    # 가사 추가 (USLT 태그 사용)
+    uslt_output = USLT(encoding=3, lang='kor', desc='', text=lyrics)
+    audio["USLT::'kor'"] = uslt_output
+
+    # 변경사항 저장
+    audio.save(file_path)
+
+# 가사 텍스트
+lyrics = """Verse 1
+러시아가 경고해, "멈춰야 해,
+한국 무기가 전쟁을 덮네."
+북한군 변수, 안보는 흔들려,
+긴장의 선이 점점 더 다가와.
+
+대통령은 말했지, "방어부터,
+단계별 판단이 필요하다."
+세계는 지켜봐, 선택의 끝,
+평화와 전쟁, 둘 중 하나뿐.
+
+Chorus
+"긴장은 높아, 불씨는 살아,
+선택의 순간, 평화로 가라."
+"경고는 날아와, 모든 걸 덮어,
+이 순간 멈추면 길이 열려."
+
+Verse 2
+대만의 긴장, 나토의 발걸음,
+동아시아에 흐르는 그림.
+러시아는 외치네, "길게 보아라,
+국익을 잃지 않길 바란다."
+
+북한의 변수, 위험은 겹쳐,
+미래의 선택, 그 끝은 어딜까?
+세계는 묻는다, 책임은 누구?
+한국의 길이 열쇠를 쥐고.
+
+Chorus
+"긴장은 높아, 불씨는 살아,
+선택의 순간, 평화로 가라."
+"경고는 날아와, 모든 걸 덮어,
+이 순간 멈추면 길이 열려." """
+
+# test2.mp3 파일에 가사 추가
+file_path = os.path.join(BASE_DIR, "test2.mp3")
+add_lyrics_to_mp3(file_path, lyrics)
